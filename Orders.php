@@ -62,9 +62,10 @@ switch ($method) {
         break;
     case 'PUT':
         if ($user->role == 'admin') {
-            parse_str(file_get_contents("php://input"), $put_vars);
-            $order_id = $put_vars['id'];
-            $status = $put_vars['status'];
+           parse_str(file_get_contents("php://input"), $put_vars);
+           $order_id = isset($put_vars['id']) ? intval($put_vars['id']) : 0;
+           $status = isset($put_vars['status']) ? trim($put_vars['status']) : '';
+
             $sql = "UPDATE Orders SET status = '$status' WHERE id = $order_id";
             if (mysqli_query($conn, $sql)) {
                 echo json_encode(["message" => "Order status updated successfully."]);
