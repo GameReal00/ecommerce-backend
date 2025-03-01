@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameReal - E-Commerce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #ecf0f1;
+        }
+
+        body {
+            background-color: #f5f6fa;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-btn {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Products Section */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-price {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-buttons {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">GameReal</a>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="openModal('login')">Login</button>
+            <button class="nav-btn" onclick="openModal('register')">Register</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to GameReal</h1>
+            <p>Discover the best gaming products at amazing prices</p>
+            <button class="nav-btn" style="background: var(--accent-color);">Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-grid">
+        <!-- Product cards will be dynamically added here -->
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="nav-btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="nav-btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 GameReal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Modal Handling
+        function openModal(type) {
+            document.getElementById(`${type}Modal`).style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                closeModal();
+            }
+        }
+
+        // Sample Product Data (Replace with your API data)
+        const products = [
+            { id: 1, name: "Gaming Mouse", price: 49.99, image: "https://source.unsplash.com/random/800x600?gaming-mouse" },
+            { id: 2, name: "Mechanical Keyboard", price: 89.99, image: "https://source.unsplash.com/random/800x600?keyboard" },
+            { id: 3, name: "Headset", price: 129.99, image: "https://source.unsplash.com/random/800x600?headset" },
+            { id: 4, name: "Controller", price: 59.99, image: "https://source.unsplash.com/random/800x600?controller" }
+        ];
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.querySelector('.products-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-price">$${product.price}</p>
+                        <button class="nav-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add to Cart Functionality
+        function addToCart(productId) {
+            // Implement cart functionality
+            alert(`Added product ${productId} to cart!`);
+        }
+
+        // Initial render
+        renderProducts();
+
+    // In registerModal's form submit handler
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = {
+        name: e.target[0].value,
+        email: e.target[1].value,
+        password: e.target[2].value
+    };
+
+    try {
+        const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/register.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            localStorage.setItem('jwt', data.token);
+            closeModal();
+            alert('Registration successful!');
+            window.location.reload(); // Refresh UI
+        } else {
+            alert(data.message || 'Registration failed');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        alert('Connection error');
+    }
+});
+    // In loginModal's form submit handler
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const credentials = {
+        email: e.target.elements[0].value,
+        password: e.target.elements[1].value
+    };
+
+    try {
+        const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            localStorage.setItem('jwt', data.token);
+            closeModal();
+            alert('Login successful!');
+            loadProducts(); // Refresh product list if needed
+        } else {
+            alert(data.message || 'Login failed');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+    }
+});
+    // Update loadProducts() function
+    async function loadProducts() {
+    try {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            alert('Please login first!');
+            return;
+        }
+
+        const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/products.php', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert('Session expired! Please login again.');
+                localStorage.removeItem('jwt');
+            }
+            throw new Error('Failed to fetch products');
+        }
+
+        const products = await response.json();
+        renderProducts(products);
+        
+    } catch (error) {
+        console.error('Product load error:', error);
+        alert(error.message);
+    }
+}
+
+// Update render function
+function renderProducts(products) {
+    const grid = document.querySelector('.products-grid');
+    grid.innerHTML = products.map(product => `
+        <div class="product-card">
+            <img src="${product.image_url}" alt="${product.name}" class="product-image">
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="product-price">$${product.price}</p>
+                <button class="nav-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            </div>
+        </div>
+    `).join('');
+}
+    // Update addToCart function
+    async function addToCart(productId) {
+    try {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            alert('Please login to add items to cart!');
+            return;
+        }
+
+        const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/Cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: 1
+            })
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.error || 'Cart update failed');
+        }
+        alert(result.message || 'Item added to cart!');
+        
+    } catch (error) {
+        console.error('Cart error:', error);
+        alert(error.message);
+    }
+}
+    // Add checkout handler
+    async function checkout() {
+    try {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            alert('Please login to checkout!');
+            return;
+        }
+
+        const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/Stripe.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Payment initialization failed');
+        }
+
+        const { client_secret } = await response.json();
+        const stripe = Stripe('pk_test_51QtDbX4cI1Ws4HrcrEKvQeHNTTfrriIBrDzZR9a33Nf5LlriPM9RNHJbF3BKUtCghUZ9QLxwHwUSC6kSwcxsk1Bi00Oy2GV1wK');
+        
+        const { error } = await stripe.confirmCardPayment(client_secret);
+        if (error) throw error;
+        
+        alert('Payment successful! Order confirmed!');
+        window.location.reload();
+
+    } catch (error) {
+        console.error('Payment error:', error);
+        alert(`Payment failed: ${error.message}`);
+    }
+}
+
+    </script>
+</body>
+</html>

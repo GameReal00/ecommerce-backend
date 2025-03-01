@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome to Our E-Commerce Store</h1>
+    <div id="products-container"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Fetch and display products
+        async function loadProducts() {
+            const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/products.php');
+            const products = await response.json();
+
+            const container = document.getElementById('products-container');
+            container.innerHTML = products.map(product => `
+                <div class="product">
+                    <h2>${product.name}</h2>
+                    <p>${product.description}</p>
+                    <p>Price: $${product.price}</p>
+                    <button onclick="addToCart(${product.id})">Add to Cart</button>
+                </div>
+            `).join('');
+        }
+
+        // Add product to cart
+        async function addToCart(productId) {
+            const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/Cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwODIwMDgxfQ.dHZAMtT9YZMNGjPtH5ohX8wH16qF0PJaAmLSSRI-mw8'
+                },
+                body: JSON.stringify({ product_id: productId, quantity: 1 })
+            });
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>

@@ -1,4 +1,9 @@
 <?php
+header("Access-Control-Allow-Origin: http://localhost");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+
 // Database connection
 $conn = new mysqli("localhost", "root", "", "e-commerce");
 

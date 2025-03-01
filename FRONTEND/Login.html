@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Login to Continue</h1>
+    <div id="auth-container">
+        <div id="login-form">
+            <h2>Login</h2>
+            <input type="text" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </div>
+        <div id="register-form">
+            <h2>Register</h2>
+            <input type="text" id="register-name" placeholder="Name">
+            <input type="text" id="register-email" placeholder="Email">
+            <input type="password" id="register-password" placeholder="Password">
+            <button onclick="register()">Register</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        async function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert('Login successful');
+                localStorage.setItem('token', result.token);
+                window.location.href = 'index.html';
+            } else {
+                alert(result.message || 'Login failed');
+            }
+        }
+
+        async function register() {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            const response = await fetch('http://localhost/PAYMENT_E-COMMERCE/register.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert('Registration successful');
+                localStorage.setItem('token', result.token);
+                window.location.href = 'index.html';
+            } else {
+                alert(result.message || 'Registration failed');
+            }
+        }
+    </script>
+</body>
+</html>

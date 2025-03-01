@@ -1,5 +1,11 @@
 <?php
 require 'vendor/autoload.php';
+
+header("Access-Control-Allow-Origin: http://localhost");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+
 use \Firebase\JWT\JWT;
 
 $key = "YOUR_SECRET_KEY";

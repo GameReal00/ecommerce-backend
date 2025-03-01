@@ -1,6 +1,11 @@
 <?php
 include 'db.php';
 
+header("Access-Control-Allow-Origin: http://localhost");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+
 parse_str(file_get_contents("php://input"), $_DELETE);
 $id = $_DELETE['id'];
 
